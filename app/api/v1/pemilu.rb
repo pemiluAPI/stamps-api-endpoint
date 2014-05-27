@@ -83,7 +83,7 @@ module Pemilu
         Tag.group('tag').count.each do |field|
           tags << {
             tag: field[0],
-            question_count: field[1]
+            stamp_count: field[1]
           }
         end
         {
