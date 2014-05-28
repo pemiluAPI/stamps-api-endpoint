@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527023209) do
+ActiveRecord::Schema.define(version: 20140528030424) do
 
   create_table "stamps", id: false, force: true do |t|
     t.string  "id",             null: false
-    t.string  "nama"
+    t.string  "text"
     t.string  "url_preview"
     t.integer "width_preview"
     t.integer "height_preview"

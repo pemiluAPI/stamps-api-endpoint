@@ -9,40 +9,38 @@ module Pemilu
       desc "Return all Stamps"
       get do
         stamps = Array.new
+        tags = params[:tags].split(',') unless params[:tags].nil?
         
         # Set default limit
         limit = (params[:limit].to_i == 0 || params[:limit].empty?) ? 50 : params[:limit]
         
-        valid_params = {
-          tag: "tags.tag"
-        }
-        
-        conditions = Hash.new
-        valid_params.each_pair do |key, value|
-          conditions[value.to_sym] = params[key.to_sym] unless params[key.to_sym].blank?
-        end
+        search = ["text LIKE ?", "%#{params[:text]}%"]
+        tags_search = ["tags.tag in (?)", tags] unless params[:tags].nil?
         
         Stamp.includes(:tags)
-          .where(conditions)          
+          .where(search)
+          .where(tags_search)
+          .references(:tags)
           .limit(limit)
           .offset(params[:offset])
           .each do |stamp|
+            tags_collection = params[:tags].nil? ? stamp.tags : Tag.where("id_stamp = ?", stamp.id)
             stamps << {
               id: stamp.id,
-              nama: stamp.nama,
+              text: stamp.text,
               url_preview: stamp.url_preview,
               width_preview: stamp.width_preview,
-              heigth_preview: stamp.height_preview,
+              height_preview: stamp.height_preview,
               url_full: stamp.url_full,
               width_full: stamp.width_full,
               height_full: stamp.height_full,
-              tags: stamp.tags.map { |tag| tag.tag }
+              tags: tags_collection.map { |tag| tag.tag }
             }
           end
           {
           results: {
             count: stamps.count,
-            total: Stamp.includes(:tags).where(conditions).count,
+            total: Stamp.includes(:tags).where(search).where(tags_search).references(:tags).count,
             stamps: stamps
           }
         }
@@ -61,10 +59,10 @@ module Pemilu
               total: 1,
               stamp: [{
                 id: stamp.id,
-                nama: stamp.nama,
+                text: stamp.text,
                 url_preview: stamp.url_preview,
                 width_preview: stamp.width_preview,
-                heigth_preview: stamp.height_preview,
+                height_preview: stamp.height_preview,
                 url_full: stamp.url_full,
                 width_full: stamp.width_full,
                 height_full: stamp.height_full,
@@ -88,7 +86,7 @@ module Pemilu
         end
         {
           results: {
-            count: tags.count,            
+            count: tags.count,
             tags: tags
           }
         }
