@@ -16,11 +16,13 @@ module Pemilu
         
         search = ["text LIKE ?", "%#{params[:text]}%"]
         
-        arr_tags = Array.new
-        tags.each do |tag|
-          arr_tags << tag.tr("_", " ")
+        unless params[:tags].nil?
+          arr_tags = Array.new
+          tags.each do |tag|
+            arr_tags << tag.tr("_", " ")
+          end
+          tags_search = ["tags.tag in (?)", arr_tags]
         end
-        tags_search = ["tags.tag in (?)", arr_tags] unless params[:tags].nil?
         
         Stamp.includes(:tags)
           .where(search)
