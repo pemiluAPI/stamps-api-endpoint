@@ -15,7 +15,12 @@ module Pemilu
         limit = (params[:limit].to_i == 0 || params[:limit].empty?) ? 50 : params[:limit]
         
         search = ["text LIKE ?", "%#{params[:text]}%"]
-        tags_search = ["tags.tag in (?)", tags] unless params[:tags].nil?
+        
+        arr_tags = Array.new
+        tags.each do |tag|
+          arr_tags << tag.tr("_", " ")
+        end
+        tags_search = ["tags.tag in (?)", arr_tags] unless params[:tags].nil?
         
         Stamp.includes(:tags)
           .where(search)
