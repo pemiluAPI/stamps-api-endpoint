@@ -11,17 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140528030424) do
+ActiveRecord::Schema.define(version: 20140606193347) do
 
   create_table "stamps", id: false, force: true do |t|
-    t.string  "id",             null: false
+    t.string  "id",            null: false
     t.string  "text"
-    t.string  "url_preview"
-    t.integer "width_preview"
-    t.integer "height_preview"
-    t.string  "url_full"
-    t.integer "width_full"
-    t.integer "height_full"
+    t.string  "url_small"
+    t.integer "width_small"
+    t.integer "height_small"
+    t.string  "url_medium"
+    t.integer "width_medium"
+    t.integer "height_medium"
+    t.string  "url_large"
+    t.integer "width_large"
+    t.integer "height_large"
   end
 
   create_table "tags", force: true do |t|

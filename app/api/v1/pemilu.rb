@@ -12,7 +12,7 @@ module Pemilu
         tags = params[:tags].split(',') unless params[:tags].nil?
         
         # Set default limit
-        limit = (params[:limit].to_i == 0 || params[:limit].empty?) ? 50 : params[:limit]
+        limit = (params[:limit].to_i == 0 || params[:limit].empty?) ? 100 : params[:limit]
         
         search = ["text LIKE ?", "%#{params[:text]}%"]
         
@@ -35,12 +35,15 @@ module Pemilu
             stamps << {
               id: stamp.id,
               text: stamp.text,
-              url_preview: stamp.url_preview,
-              width_preview: stamp.width_preview,
-              height_preview: stamp.height_preview,
-              url_full: stamp.url_full,
-              width_full: stamp.width_full,
-              height_full: stamp.height_full,
+              url_small: stamp.url_small,
+              width_small: stamp.width_small,
+              height_small: stamp.height_small,
+              url_medium: stamp.url_medium,
+              width_medium: stamp.width_medium,
+              height_medium: stamp.height_medium,
+              url_large: stamp.url_large,
+              width_large: stamp.width_large,
+              height_large: stamp.height_large,
               tags: tags_collection.map { |tag| tag.tag }
             }
           end
@@ -67,12 +70,15 @@ module Pemilu
               stamp: [{
                 id: stamp.id,
                 text: stamp.text,
-                url_preview: stamp.url_preview,
-                width_preview: stamp.width_preview,
-                height_preview: stamp.height_preview,
-                url_full: stamp.url_full,
-                width_full: stamp.width_full,
-                height_full: stamp.height_full,
+                url_small: stamp.url_small,
+                width_small: stamp.width_small,
+                height_small: stamp.height_small,
+                url_medium: stamp.url_medium,
+                width_medium: stamp.width_medium,
+                height_medium: stamp.height_medium,
+                url_large: stamp.url_large,
+                width_large: stamp.width_large,
+                height_large: stamp.height_large,
                 tags: stamp.tags.map { |tag| tag.tag }
               }]
             }
